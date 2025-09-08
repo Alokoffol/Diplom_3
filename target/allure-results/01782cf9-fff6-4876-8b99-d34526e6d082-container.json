@@ -1,0 +1,1 @@
+{"uuid":"01782cf9-fff6-4876-8b99-d34526e6d082","name":"tests.ConstructorTest.setUp","children":["9fc49122-511a-4e75-9d7a-6b06ef016f11"],"description":"","befores":[{"name":"setUp","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1757348619854,"stop":1757348621800}],"afters":[],"start":1757348619854,"stop":1757348621800}

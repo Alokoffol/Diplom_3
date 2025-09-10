@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+
 public class RegisterPage extends BasePage {
 
     private By nameField = By.xpath("//label[text()='Имя']/following-sibling::input");

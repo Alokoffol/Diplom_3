@@ -3,6 +3,7 @@ package tests;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.junit.jupiter.api.DisplayName;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -22,19 +23,26 @@ public class ConstructorTest {
         mainPage = new MainPage(driver);
     }
 
-    @Test
+    @Test(description = "Проверка переключения на вкладку 'Булки'")
     public void testNavigateToBuns() {
+        // Переключимся на Соусы
+        mainPage.navigateToSection("Соусы");
+        Assert.assertTrue(mainPage.isSectionActive("Соусы"), "Вкладка 'Соусы' не стала активной");
+
+        // Вернёмся обратно к Булкам
         mainPage.navigateToSection("Булки");
-        Assert.assertTrue(mainPage.isSectionActive("Булки"), "Вкладка 'Булки' не стала активной");
+        Assert.assertTrue(mainPage.isSectionActive("Булки"), "Вкладка 'Булки' не стала активной после переключения");
     }
 
-    @Test
+    @Test(description = "Проверка переключения на вкладку 'Соусы'")
+    @DisplayName("Переключение на Соусы")
     public void testNavigateToSauces() {
         mainPage.navigateToSection("Соусы");
         Assert.assertTrue(mainPage.isSectionActive("Соусы"), "Вкладка 'Соусы' не стала активной");
     }
 
-    @Test
+    @Test(description = "Проверка переключения на вкладку 'Начинки'")
+    @DisplayName("Переключение на Начинки")
     public void testNavigateToFillings() {
         mainPage.navigateToSection("Начинки");
         Assert.assertTrue(mainPage.isSectionActive("Начинки"), "Вкладка 'Начинки' не стала активной");

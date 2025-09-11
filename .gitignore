@@ -21,3 +21,4 @@ Thumbs.db
 # Maven
 target/
 
+allure-results/

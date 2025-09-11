@@ -1,0 +1,26 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="StellarBurgersSuite" parallel="tests" thread-count="2">
+
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <test name="ChromeTests">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="tests.RegistrationTest"/>
+            <class name="tests.LoginTest"/>
+            <class name="tests.ConstructorTest"/>
+        </classes>
+    </test>
+
+    <test name="YandexTests">
+        <parameter name="browser" value="yandex"/>
+        <classes>
+            <class name="tests.RegistrationTest"/>
+            <class name="tests.LoginTest"/>
+            <class name="tests.ConstructorTest"/>
+        </classes>
+    </test>
+
+</suite>

@@ -1,12 +1,8 @@
 package tests;
 
-import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.DisplayName;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -19,13 +15,12 @@ import pages.RegisterPage;
 import utils.ApiHelper;
 import utils.DriverFactory;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+
 
 import io.restassured.response.Response;
-import com.github.javafaker.Faker; // <-- Импорт JavaFaker
+import com.github.javafaker.Faker;
 import java.util.Locale;
 
 public class RegistrationTest {
@@ -36,7 +31,7 @@ public class RegistrationTest {
     private RegisterPage registerPage;
     private String accessToken;
     // Создаем экземпляр Faker
-    private Faker faker = new Faker(new Locale("en")); // Можно использовать new Faker() для локали по умолчанию
+    private Faker faker = new Faker(new Locale("en"));
 
     @Parameters("browser")
     @BeforeMethod

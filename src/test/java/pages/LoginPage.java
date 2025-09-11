@@ -1,6 +1,5 @@
 package pages;
 
-import constants.AppConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import io.qameta.allure.Step;

@@ -1,6 +1,5 @@
 package utils;
 
-import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -18,18 +17,14 @@ public class ApiHelper {
      * @return Map с ключами "success", "user", "accessToken", "refreshToken"
      */
     public static Map<String, Object> registerUser(Map<String, Object> userData) {
-        // Используем Gson для сериализации
-        Gson gson = new Gson();
-        String jsonBody = gson.toJson(userData);
-
-        System.out.println("DEBUG ApiHelper: Отправка запроса регистрации с данными: " + jsonBody);
-
+        // Передаем Map напрямую в .body() - RestAssured сам выполнит сериализацию
         Response response = RestAssured
                 .given()
                 .header("Content-Type", "application/json")
-                .body(jsonBody) // Передаем JSON строку
-                .post(BASE_URL + "/api/auth/register"); // Правильный URL
+                .body(userData) // Передаем объект Map напрямую
+                .post(BASE_URL + "/api/auth/register");
 
+        System.out.println("DEBUG ApiHelper: Отправка запроса регистрации с данными: " + userData);
         System.out.println("DEBUG ApiHelper: Ответ API регистрации. Код: " + response.statusCode() + ", Тело: " + response.asString());
 
         // Проверяем код ответа
@@ -57,7 +52,7 @@ public class ApiHelper {
 
         Response response = RestAssured
                 .given()
-                .header("Authorization", accessToken) // Обычно токен передается в заголовке Authorization
+                .header("Authorization", accessToken)
                 .delete(BASE_URL + "/api/auth/user");
 
         if (response.statusCode() != 202) {

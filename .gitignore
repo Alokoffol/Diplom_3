@@ -1,8 +1,7 @@
 # Allure
 target/allure-results/
-target/allure-report/
-allure-results/
-allure-report/
+# target/allure-report/
+# allure-report/
 .allure/
 *.json
 *.txt

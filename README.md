@@ -35,28 +35,40 @@ Stellar Burgers — это веб-приложение для сборки ко�
     Управление зависимостями: Maven
     Поддерживаемые браузеры: Google Chrome, Яндекс.Браузер (на одном chromedriver.exe)
 
-src/
-├── main/
-│   └── java/
-│       └── constants/          # Константы (URL, пути, таймауты)
-├── test/
-│   ├── java/
-│   │   ├── pages/             # Классы страниц (Page Objects)
-│   │   │   ├── BasePage.java
-│   │   │   ├── MainPage.java
-│   │   │   ├── LoginPage.java
-│   │   │   └── RegisterPage.java
-│   │   ├── tests/             # Тестовые классы
-│   │   │   ├── RegistrationTest.java
-│   │   │   ├── LoginTest.java
-│   │   │   └── ConstructorTest.java
-│   │   └── utils/             # Вспомогательные утилиты
-│   │       ├── DriverFactory.java  # Создание драйверов
-│   │       └── ApiHelper.java      # Удаление пользователя через API
-│   └── resources/
-│       └── testng.xml         # Конфигурация запуска TestNG
-└── pom.xml                    # Файл зависимостей Maven
+## Структура проекта
 
+```
+Diplom_3/
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       ├── constants/
+│   │       │   └── AppConstants.java
+│   │       └── org.example/
+│   │           └── Main.java
+│   └── test/
+│       ├── java/
+│       │   ├── pages/
+│       │   │   ├── BasePage.java
+│       │   │   ├── LoginPage.java
+│       │   │   ├── MainPage.java
+│       │   │   └── RegisterPage.java
+│       │   ├── tests/
+│       │   │   ├── ConstructorTest.java
+│       │   │   ├── LoginTest.java
+│       │   │   └── RegistrationTest.java
+│       │   └── utils/
+│       │       ├── ApiHelper.java
+│       │       └── DriverFactory.java
+│       └── resources/
+│           ├── allure.properties
+│           └── testng.xml
+├── target/
+│   └── allure-results/
+├── .gitignore
+├── pom.xml
+└── README.md
+```
 
 ⚙️ Настройка и запуск
 

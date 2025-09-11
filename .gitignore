@@ -3,6 +3,7 @@ target/allure-results/
 target/allure-report/
 allure-results/
 allure-report/
+.allure/
 *.json
 *.txt
 *.properties

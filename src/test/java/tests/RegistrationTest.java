@@ -1,30 +1,32 @@
 package tests;
 
-import org.openqa.selenium.By;
 import io.qameta.allure.Description;
-import org.junit.jupiter.api.DisplayName;
 import io.qameta.allure.Step;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.junit.jupiter.api.DisplayName;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 import pages.LoginPage;
 import pages.MainPage;
 import pages.RegisterPage;
 import utils.ApiHelper;
 import utils.DriverFactory;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import io.restassured.response.Response;
+import com.github.javafaker.Faker; // <-- Импорт JavaFaker
+import java.util.Locale;
 
 public class RegistrationTest {
 
@@ -33,6 +35,8 @@ public class RegistrationTest {
     private LoginPage loginPage;
     private RegisterPage registerPage;
     private String accessToken;
+    // Создаем экземпляр Faker
+    private Faker faker = new Faker(new Locale("en")); // Можно использовать new Faker() для локали по умолчанию
 
     @Parameters("browser")
     @BeforeMethod
@@ -49,16 +53,16 @@ public class RegistrationTest {
     public void testSuccessfulRegistration() {
         navigateToRegistrationPage();
 
-        String name = "Test User";
-        String email = generateTestEmail();
-        String password = "password123";
+        // Генерируем уникальные данные с помощью JavaFaker
+        String name = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String password = faker.internet().password(6, 15); // Минимум 6 символов
 
         registerUser(name, email, password);
 
         // Ждем пока появится кнопка "Войти" (значит мы на странице логина)
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//button[text()='Войти']")));
+        // Используем метод из Page Object, а не прямой локатор
+        loginPage.waitForLoginButtonToBeVisible();
 
         verifySuccessfulRegistration();
 
@@ -70,7 +74,12 @@ public class RegistrationTest {
     public void testInvalidPasswordError() {
         navigateToRegistrationPage();
 
-        registerWithShortPassword();
+        // Генерируем данные, но используем короткий пароль
+        String name = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String shortPassword = "123"; // Намеренно короткий
+
+        registerPage.register(name, email, shortPassword);
 
         verifyPasswordErrorDisplayed();
     }
@@ -92,11 +101,6 @@ public class RegistrationTest {
         loginPage.goToRegisterPage();
     }
 
-    @Step("Генерация уникального тестового email")
-    private String generateTestEmail() {
-        return "testuser" + UUID.randomUUID() + "@example.com";
-    }
-
     @Step("Регистрация пользователя через UI: имя={name}, email={email}")
     private void registerUser(String name, String email, String password) {
         registerPage.register(name, email, password);
@@ -107,23 +111,9 @@ public class RegistrationTest {
         // После регистрации пользователь должен быть перенаправлен на страницу логина
         Assert.assertTrue(
                 driver.getCurrentUrl().contains("/login") ||
-                        isLoginButtonDisplayed(),
+                        loginPage.isLoginButtonDisplayed(),
                 "После регистрации пользователь не был перенаправлен на страницу логина. Текущий URL: " + driver.getCurrentUrl()
         );
-    }
-
-    @Step("Проверка отображения кнопки Войти")
-    private boolean isLoginButtonDisplayed() {
-        try {
-            return driver.findElement(By.xpath("//button[text()='Войти']")).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Step("Регистрация с коротким паролем (3 символа)")
-    private void registerWithShortPassword() {
-        registerPage.register("Test User", "test@example.com", "123");
     }
 
     @Step("Проверка отображения ошибки о некорректном пароле")
@@ -143,7 +133,7 @@ public class RegistrationTest {
         Response response = io.restassured.RestAssured
                 .given()
                 .header("Content-Type", "application/json")
-                .body(loginData)
+                .body(loginData) // RestAssured может сериализовать Map автоматически
                 .post("https://stellarburgers.nomoreparties.site/api/auth/login");
 
         if (response.statusCode() == 200) {
